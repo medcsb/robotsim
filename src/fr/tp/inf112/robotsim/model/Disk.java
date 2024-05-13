@@ -1,7 +1,9 @@
 package fr.tp.inf112.robotsim.model;
 
+import fr.tp.inf112.robotsim.utils.Coordinates;
+
 public class Disk extends Component {
-    public Disk(int x, int y, int width, int height) {
-        super(x, y, width, height);
+    public Disk(Coordinates coordinates, int width, int height) {
+        super(coordinates, width, height);
     }
 }

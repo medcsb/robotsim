@@ -2,6 +2,8 @@ package fr.tp.inf112.robotsim.model;
 
 import java.util.ArrayList;
 
+import fr.tp.inf112.robotsim.utils.Coordinates;
+
 public class Room extends Component {
 
     private String name;
@@ -9,8 +11,8 @@ public class Room extends Component {
     private ArrayList<Door> doors = new ArrayList<>();
     private ArrayList<Robot> robots = new ArrayList<>();
 
-    public Room(String name, int x, int y, int width, int height) {
-        super(x, y, width, height);
+    public Room(String name, Coordinates coordinates, int width, int height) {
+        super(coordinates, width, height);
         this.name = name;
         this.doors = new ArrayList<>();
         this.machines = new ArrayList<>();
@@ -49,7 +51,10 @@ public class Room extends Component {
     private String machinesToString() {
         String result = "";
         for (Component machine : machines) {
-            result += machine.toString() + ", ";
+            result += machine.toString();
+            if (machines.indexOf(machine) < machines.size() - 1) {
+                result += ", ";
+            }
         }
         return result;
     }
@@ -57,7 +62,10 @@ public class Room extends Component {
     private String doorsToString() {
         String result = "";
         for (Door door : doors) {
-            result += door.toString() + ", ";
+            result += door.toString();
+            if (doors.indexOf(door) < doors.size() - 1) {
+                result += ", ";
+            }
         }
         return result;
     }

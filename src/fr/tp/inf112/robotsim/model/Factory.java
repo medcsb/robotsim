@@ -1,45 +1,80 @@
 package fr.tp.inf112.robotsim.model;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Factory {
 
     private String name;
     private ArrayList<Room> rooms;
     private ArrayList<Robot> robots;
-    private hashMap<Room, Component> roomMap;
+    private HashMap<Room, ArrayList<Component>> roomMap;
 
     public Factory(String name) {
         this.name = name;
         this.rooms = new ArrayList<>();
+        this.robots = new ArrayList<>();
+        this.roomMap = new HashMap<>();
     }
 
-    public void addRoom(String name, int x, int y, int width, int height) {
-        Room room = new Room(name, x, y, width, height);
-        rooms.add(room);
+    public void addComponentToRoom(String roomName, Component component) {
+        for (Room room : roomMap.keySet()) {
+            if (room.getName().equalsIgnoreCase(roomName)) {
+                ArrayList<Component> components = roomMap.get(room);
+                if (components == null) {
+                    components = new ArrayList<>();
+                }
+                components.add(component);
+                roomMap.put(room, components);
+                room.addMachine(component);
+            }
+        }
     }
 
-    public boolean addRobot(String name, double speed, int x, int y, int width, int height) {
-        if (checkRobotName(name)) {
-            robots.add(new Robot(name, 0.0, x, y, width, height));
+    public void addRoom(Room room) {
+        this.rooms.add(room);
+        // could replace null by enumerating all the components in the room
+        this.roomMap.put(room, null);
+    }
+
+    public void addDoor(Door door) {
+        Room room1 = door.getRoom1();
+        Room room2 = door.getRoom2();
+        room1.addDoor(door);
+        room2.addDoor(door);
+    }
+
+    public boolean addRobot(Robot robot) {
+        if (checkRobotName(robot.getName())) {
+            robots.add(robot);
             return true;
         }
+        robot = null;
         return false;
     }
 
     private boolean checkRobotName(String name) {
         for (Robot robot : robots) {
-            if (robot.getName().equalsIgnoreCase(name)) {
+            if (robot.getName().equals(name)) {
                 return false;
             }
         }
         return true;
     }
 
-    public void printToConsole() {
-        System.out.println("Factory: " + getFactoryName());
-        System.out.println("[Rooms: " + rooms + "]");
-        System.out.println("[Robots: " + robots + "]");
+    @Override
+    public String toString() {
+        String result = "Factory name=" + name + " \n\n";
+        result += "Rooms: \n\n";
+        for (Room room : rooms) {
+            result += room.toString() + "\n";
+        }
+        result += "\n\nRobots: \n\n";
+        for (Robot robot : robots) {
+            result += robot.toString() + "\n";
+        }
+
+        return result;
     }
 
     public String getFactoryName() {

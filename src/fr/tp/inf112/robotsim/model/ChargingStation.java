@@ -1,16 +1,18 @@
 package fr.tp.inf112.robotsim.model;
 
+import fr.tp.inf112.robotsim.utils.Coordinates;
+
 public class ChargingStation extends Component {
 
     private int id;
 
-    public ChargingStation(int id, int x, int y, int width, int height) {
-        super(x, y, width, height);
+    public ChargingStation(int id, Coordinates coordinates, int width, int height) {
+        super(coordinates, width, height);
         this.id = id;
     }
 
     @Override
     public String toString() {
-        return "ChargingStation : " + id;
+        return "ChargingStation n:" + id;
     }
 }
